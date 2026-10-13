@@ -1,21 +1,25 @@
-with 
-
-source as (
-
-    select * from {{ source('instacart', 'raw_order_products__prior') }}
-
+with order_products_prior as (
+    select
+        order_id,
+        product_id,
+        add_to_cart_sequence,
+        is_reordered
+    from {{ ref('stg_instacart__order_products__prior') }}
 ),
 
-renamed as (
-
+order_products_train as (
     select
-        cast(order_id as integer) as order_id,
-        cast(product_id as integer) as product_id,
-        cast(add_to_cart_order as integer) as add_to_cart_sequence,
-        cast(reordered as integer) as is_reordered
+        order_id,
+        product_id,
+        add_to_cart_sequence,
+        is_reordered
+    from {{ ref('stg_instacart__order_products__train') }}
+),
 
-    from source
-
+unioned as (
+    select * from order_products_prior
+    union all
+    select * from order_products_train
 )
 
-select * from renamed
+select * from unioned
