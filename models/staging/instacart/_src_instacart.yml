@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: instacart
+    database: instacart_project
+    schema: raw
+    tables:
+      - name: raw_aisles
+      - name: raw_departments
+      - name: raw_order_products__prior
+      - name: raw_order_products__train
+      - name: raw_orders
+      - name: raw_products 
