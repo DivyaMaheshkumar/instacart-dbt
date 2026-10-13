@@ -9,7 +9,7 @@ source as (
 renamed as (
 
     select
-        cast(aisle_id as integer),
+        cast(aisle_id as integer) as aisle_id,
         cast(aisle as varchar) as aisle_name
 
     from source
