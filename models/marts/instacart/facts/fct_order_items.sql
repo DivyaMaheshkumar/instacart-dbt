@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key=['order_id', 'product_id']
+    )
+}}
+
 with order_products as (
     select
         order_id,
@@ -13,3 +20,7 @@ select
     add_to_cart_sequence,
     is_reordered
 from order_products
+
+{% if is_incremental() %}
+  where order_id > max(order_id) from {{ this }}
+{% endif %}  
