@@ -3,8 +3,7 @@ with order_products_prior as (
         order_id,
         product_id,
         add_to_cart_sequence,
-        is_reordered,
-        order_phase
+        is_reordered
     from {{ ref('stg_instacart__order_products__prior') }}
 ),
 
@@ -13,8 +12,7 @@ order_products_train as (
         order_id,
         product_id,
         add_to_cart_sequence,
-        is_reordered,
-        order_phase
+        is_reordered
     from {{ ref('stg_instacart__order_products__train') }}
 ),
 
