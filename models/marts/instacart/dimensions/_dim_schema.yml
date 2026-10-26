@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Final customer dimension table containing lifetime aggregations, behavioral ratios, and RFM segmentation for the Instacart dataset."
+    columns:
+      - name: user_id
+        description: "The unique identifier for each customer."
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_segment
+        description: "Behavioral tier assigned to the customer based on order frequency, volume, and recency."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: 
+                  - 'VIP / Power Shopper'
+                  - 'Loyal Regular'
+                  - 'At-Risk / Churning'
+                  - 'Bulk / Stock-up Shopper'
+                  - 'Active Shopper'
+                  - 'New / Occasional'
+
+      - name: recency_days
+        description: "The exact days since the customer's last recorded prior order."
+        tests:
+          - not_null
+
+      - name: total_orders
+        description: "Total number of orders placed by the customer."
+        tests:
+          - not_null
+
+      - name: total_items_bought
+        description: "Total item volume added to carts across all orders."
+        tests:
+          - not_null
+
+  - name: dim_products
+    description: "Product dimension table with enriched aisle and department details."
+    columns:
+      - name: product_id
+        description: "The unique identifier for each product."
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Name of the product."
+        tests:
+          - not_null

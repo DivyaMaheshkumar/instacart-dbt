@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Order-level fact table capturing order timing, sequence metadata, and aggregated order item metrics."
+    columns:
+      - name: order_id
+        description: "Primary key for the order."
+        tests:
+          - unique
+          - not_null
+
+      - name: user_id
+        description: "Foreign key linking to dim_customers."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: user_id
+
+      - name: total_items_in_order
+        description: "Count of total items in the order."
+        tests:
+          - not_null
+
+  - name: fct_order_items
+    description: "Line-item fact table capturing every product added within an order, sequence, and reorder status."
+    columns:
+      - name: order_id
+        description: "Foreign key for the order."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_orders')
+                field: order_id
+
+      - name: product_id
+        description: "Foreign key linking to dim_products."
+        tests:
+          - not_null
+          - relationships:
+              arguments: 
+                to: ref('dim_products')
+                field: product_id
+
+      - name: add_to_cart_sequence
+        description: "The sequence in which the product was added to the cart."
+        tests:
+          - not_null
+
+      - name: is_reordered
+        description: "Flag indicating whether the product has been ordered by this user before (1 = yes, 0 = no)."
+        tests:
+          - not_null
+          - accepted_values:
+              arguments: 
+                values: [0, 1]
