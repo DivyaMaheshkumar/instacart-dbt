@@ -22,5 +22,5 @@ select
 from order_products
 
 {% if is_incremental() %}
-  where order_id > max(order_id) from {{ this }}
+  where order_id > (select max(order_id) from {{ this }})
 {% endif %}  
