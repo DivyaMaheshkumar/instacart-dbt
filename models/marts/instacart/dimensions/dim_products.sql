@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='table',
+        tags=['marts', 'products']
+    )
+}}
+
 with products as (
     select
         product_id,
